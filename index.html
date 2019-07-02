@@ -1,0 +1,58 @@
+<!-- Есть недописаная функция "parallel(funcArray, doneAll)"
+Нужно её дописать. Что-то вроде аналога promise.all. 
+И не забудьте, что результирующий массив должен сохранять тот порядок, в котором передавались функции. -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Parallel</title>
+  </head>
+  <body>
+    <script>
+      function parallel(funcArray, doneAll) {
+        let results = [],
+          count = 0;
+
+        funcArray.forEach((item, i) => {
+          item(res => {
+            results[i] = res;
+            count++;
+
+            if (count === funcArray.length) {
+              doneAll(results);
+            }
+          });
+        });
+      }
+
+      var a = function(done) {
+        setTimeout(function() {
+          done("result a");
+        }, 300);
+      };
+
+      var b = function(done) {
+        setTimeout(function() {
+          done("result b");
+        }, 200);
+      };
+
+      var c = function(done) {
+        setTimeout(function() {
+          done("result c");
+        }, 500);
+      };
+
+      var d = function(done) {
+        setTimeout(function() {
+          done("result d");
+        }, 0);
+      };
+
+      parallel([a, b, c, d], function(results) {
+        console.log(results); // ['result a', 'result b', ...]
+      });
+    </script>
+  </body>
+</html>
